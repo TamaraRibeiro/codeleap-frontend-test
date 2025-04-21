@@ -5,10 +5,12 @@ import ModalDeletePost from "./modal-delete-post";
 import ModalEditPost from "./modal-edit-post";
 import { CardProps, GetCardProps } from "../@types/types";
 import { getRelativeTime } from "../utils/getRelativeTime";
+import { useUser } from "../contexts/userContext";
 
 export default function CardPost({card, setCards}: {card: CardProps, setCards: React.Dispatch<React.SetStateAction<GetCardProps>>}) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const {username} = useUser();
   function handleDeleteModal() {
     setIsDeleteModalOpen(!isDeleteModalOpen);
   }
@@ -18,10 +20,11 @@ export default function CardPost({card, setCards}: {card: CardProps, setCards: R
 
   return (
     <div className="rounded-2xl border border-grey-700 bg-white">
-      <div className="bg-codeleap-blue rounded-t-2xl p-6 flex items-center justify-between -translate-y-0.5">
+      <div className="bg-codeleap-blue rounded-t-2xl p-6 flex items-center justify-between gap-5 -translate-y-0.5">
         <h1 className="text-white font-bold text-xl lg:text-1xl leading-100">
           {card.title}
         </h1>
+        {card.username === username &&
         <div className="flex items-center gap-4 lg:gap-6">
           <TbTrashXFilled
             onClick={handleDeleteModal}
@@ -32,6 +35,7 @@ export default function CardPost({card, setCards}: {card: CardProps, setCards: R
             className="text-white size-5 lg:size-7.5 cursor-pointer hover:scale-110 hover:rotate-12 hover:text-green-400 transition ease-in-out duration-200"
           />
         </div>
+        }
       </div>
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
