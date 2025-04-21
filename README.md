@@ -1,54 +1,40 @@
-# React + TypeScript + Vite
+# CodeLeap Frontend Engineering Test
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  <img src=".github/cover.png" alt="cover codeleap test" width="100%" />
+</p>
 
-Currently, two official plugins are available:
+## 🖥️ Project
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Project developed as a technical test for a Frontend position at CodeLeap. The goal is to create an interface for a simple application similar to a social media that will perform just basic CRUD functions following the designed provided.
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Technologies
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+The following technologies were used to develop this project:
+- Vite + React
+- TailwindCSS  
+- TypeScript
+- React Router
+- Axios
+
+## 🛠️ Installation
+
+Use the package manager [npm](https://www.npmjs.com/) or [pnpm](https://pnpm.io/pt/) to install the project dependencies.
+
+## 🐾 Steps
+First download or clone the project folder from this GitHub repository. 
+
+Then run the command to install the dependencies:
+```bash
+npm install
+pnpm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+Lastly run the command to run the frontend application on your localhost:
+```bash
+npm run dev
+pnpm run dev
 ```
+
+### ✨ You also can check the project running [here](codeleap-frontend-test-nh52e8z33.vercel.app)!
