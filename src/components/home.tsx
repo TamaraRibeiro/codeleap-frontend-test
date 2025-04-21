@@ -2,15 +2,46 @@ import { useNavigate } from "react-router";
 import { useUser } from "../contexts/userContext";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import CardPost from "./card-post";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { GetCardProps } from "../@types/types";
 
 export default function Home() {
   const { username, logout } = useUser();
   const navigate = useNavigate();
+  const [titleInput, setTitleInput] = useState("");
+  const [contentInput, setContentInput] = useState("");
 
   function handleLogout() {
     logout();
     navigate("/");
   }
+  const [cards, setCards] = useState({} as GetCardProps);
+
+  useEffect(() => {
+    const getCards = async () => {
+      const resultCards = await axios
+        .get("https://dev.codeleap.co.uk/careers/")
+        .then((result) => result.data);
+      setCards(resultCards);
+    };
+    getCards();
+  }, [cards]);
+  console.log(cards);
+
+  async function createPost() {
+    await axios.post("https://dev.codeleap.co.uk/careers/", {
+      username: username,
+      title: titleInput,
+      content: contentInput,
+    });
+    setCards(
+      {...cards}
+    )
+    setTitleInput("");
+    setContentInput("");
+  }
+
   return (
     <div className="max-w-[50rem]">
       <header className="bg-codeleap-blue py-7 px-9 w-full flex items-center justify-between gap-6">
@@ -44,7 +75,10 @@ export default function Home() {
               Title
             </label>
             <input
+              onChange={(e) => setTitleInput(e.target.value)}
+              value={titleInput}
               type="text"
+              name="title"
               placeholder="Hello world"
               className="border border-grey-400 rounded-lg py-2 px-2.5 text-sm leading-100 font-normal placeholder:text-grey-200 focus:outline-codeleap-blue"
             />
@@ -57,21 +91,25 @@ export default function Home() {
               Content
             </label>
             <textarea
-              name=""
-              id=""
+              onChange={(e) => setContentInput(e.target.value)}
+              name="content"
+              value={contentInput}
               placeholder="Content here"
               className="border border-grey-400 rounded-lg py-2 px-2.5 text-sm leading-100 font-normal placeholder:text-grey-200 focus:outline-codeleap-blue min-h-18.5"
             ></textarea>
           </div>
           <button
-            className={`text-sm lg:text-base rounded-lg bg-codeleap-blue py-1.5 font-bold leading-100 text-white w-24 lg:w-28 h-8 self-end cursor-pointer hover:scale-105 transition ease-in-out duration-200 disabled:cursor-not-allowed disabled:scale-100`}
+            disabled={!titleInput || !contentInput}
+            onClick={createPost}
+            className={`text-sm lg:text-base rounded-lg py-1.5 font-bold leading-100 text-white w-24 lg:w-28 h-8 self-end cursor-pointer hover:scale-105 transition ease-in-out duration-200 ${titleInput === "" || contentInput === "" ? "bg-gray-200" : "bg-codeleap-blue"} disabled:cursor-not-allowed disabled:scale-100`}
           >
             Create
           </button>
         </div>
 
         {/* card posts */}
-        <CardPost />
+        {cards.results &&
+          cards.results.map((card) => <CardPost key={card.id} card={card} />)}
       </main>
     </div>
   );
