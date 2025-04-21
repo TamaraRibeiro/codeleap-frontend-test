@@ -37,4 +37,4 @@ npm run dev
 pnpm run dev
 ```
 
-### ✨ You also can check the project running [here](codeleap-frontend-test-nh52e8z33.vercel.app)!
+### ✨ You also can check the project running [here](https://codeleap-frontend-test-phi.vercel.app/)!
