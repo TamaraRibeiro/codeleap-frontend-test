@@ -1,8 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import { useUser } from "../contexts/userContext";
 
 export default function ModalLogin() {
   const [userInput, setUserInput] = useState("");
+  const navigate = useNavigate();
+  const { setUsername } = useUser()
 
+  function handleLogin() {
+    setUsername(userInput)
+    navigate("/home")
+  }
 
   return (
     <div className="bg-white border border-grey-200 rounded-2xl lg:max-w-[500px] lg:max-h-[205px] p-6 flex flex-col">
@@ -18,7 +26,7 @@ export default function ModalLogin() {
           className="border border-grey-400 rounded-lg py-2 px-2.5 text-sm leading-100 font-normal placeholder:text-grey-200 focus:outline-codeleap-blue"
         />
       </div>
-      <button disabled={!userInput} className={`uppercase rounded-lg bg-codeleap-blue py-1.5 font-bold leading-100 text-white w-28 h-8 self-end cursor-pointer hover:scale-105 transition ease-in-out duration-200 ${userInput === "" && "bg-gray-200"} disabled:cursor-not-allowed disabled:scale-100`}>
+      <button disabled={!userInput} onClick={handleLogin} className={`uppercase rounded-lg bg-codeleap-blue py-1.5 font-bold leading-100 text-white w-28 h-8 self-end cursor-pointer hover:scale-105 transition ease-in-out duration-200 ${userInput === "" && "bg-gray-200"} disabled:cursor-not-allowed disabled:scale-100`}>
         Enter
       </button>
     </div>
