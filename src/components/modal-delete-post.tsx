@@ -1,16 +1,25 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import { GetCardProps } from "../@types/types";
 
 export default function ModalDeletePost({
   handleDeleteModal,
   id,
+  setCards,
 }: {
   handleDeleteModal: () => void;
   id: number;
+  setCards: React.Dispatch<React.SetStateAction<GetCardProps>>;
 }) {
   async function handleDeletePost() {
     try {
       await axios.delete(`https://dev.codeleap.co.uk/careers/${id}/`);
+      setCards((prev) => {
+        return {
+          ...prev,
+          results: prev.results.filter((card) => card.id !== id),
+        };
+      });
       toast.success("Post deleted successfully!");
     } catch (error) {
       console.log(error);

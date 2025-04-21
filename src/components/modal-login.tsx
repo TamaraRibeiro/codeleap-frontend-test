@@ -26,7 +26,7 @@ export default function ModalLogin() {
           className="border border-grey-400 rounded-lg py-2 px-2.5 text-sm leading-100 font-normal placeholder:text-grey-200 focus:outline-codeleap-blue"
         />
       </div>
-      <button disabled={!userInput} onClick={handleLogin} className={`uppercase rounded-lg bg-codeleap-blue py-1.5 font-bold leading-100 text-white w-28 h-8 self-end cursor-pointer hover:scale-105 transition ease-in-out duration-200 ${userInput === "" && "bg-gray-200"} disabled:cursor-not-allowed disabled:scale-100`}>
+      <button disabled={!userInput} onClick={handleLogin} className={`uppercase rounded-lg bg-codeleap-blue py-1.5 font-bold leading-100 text-white w-28 h-8 self-end cursor-pointer hover:scale-105 transition ease-in-out duration-200 ${userInput === "" && "bg-grey-200"} disabled:cursor-not-allowed disabled:scale-100`}>
         Enter
       </button>
     </div>

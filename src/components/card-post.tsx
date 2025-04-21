@@ -3,10 +3,10 @@ import { FiEdit } from "react-icons/fi";
 import { TbTrashXFilled } from "react-icons/tb";
 import ModalDeletePost from "./modal-delete-post";
 import ModalEditPost from "./modal-edit-post";
-import { CardProps } from "../@types/types";
+import { CardProps, GetCardProps } from "../@types/types";
 import { getRelativeTime } from "../utils/getRelativeTime";
 
-export default function CardPost({card}: {card: CardProps}) {
+export default function CardPost({card, setCards}: {card: CardProps, setCards: React.Dispatch<React.SetStateAction<GetCardProps>>}) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   function handleDeleteModal() {
@@ -49,7 +49,7 @@ export default function CardPost({card}: {card: CardProps}) {
         </div>
       </div>
       {isDeleteModalOpen && (
-        <ModalDeletePost handleDeleteModal={handleDeleteModal} id={card.id} />
+        <ModalDeletePost handleDeleteModal={handleDeleteModal} id={card.id} setCards={setCards} />
       )}
       {isEditModalOpen && <ModalEditPost handleEditModal={handleEditModal} card={card} />}
     </div>

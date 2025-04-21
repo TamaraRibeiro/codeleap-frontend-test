@@ -13,36 +13,60 @@ export default function Home() {
   const [titleInput, setTitleInput] = useState("");
   const [contentInput, setContentInput] = useState("");
 
+  const [cards, setCards] = useState({} as GetCardProps);
+
+  const [page, setPage] = useState(1);
+
   function handleLogout() {
     logout();
     navigate("/");
   }
-  const [cards, setCards] = useState({} as GetCardProps);
 
   useEffect(() => {
     const getCards = async () => {
       const resultCards = await axios
-        .get("https://dev.codeleap.co.uk/careers/")
+        .get("https://dev.codeleap.co.uk/careers/?limit=10")
         .then((result) => result.data);
       setCards(resultCards);
     };
     getCards();
-  }, [cards]);
-  console.log(cards);
+  }, []);
+
+  async function goToNextPage() {
+    if (cards.next !== null) {
+      const resultCards = await axios
+        .get(`${cards.next}`)
+        .then((result) => result.data);
+      setCards(resultCards);
+    }
+
+    setPage(page + 1);
+  }
+
+  async function goToPreviousPage() {
+    if (cards.previous !== null) {
+      const resultCards = await axios
+        .get(`${cards.previous}`)
+        .then((result) => result.data);
+      setCards(resultCards);
+    }
+
+    setPage(page - 1);
+  }
 
   async function createPost() {
     try {
-      await axios.post("https://dev.codeleap.co.uk/careers/", {
+      const result = await axios.post("https://dev.codeleap.co.uk/careers/", {
         username: username,
         title: titleInput,
         content: contentInput,
-      });
-      setCards({ ...cards });
+      }).then((result) => result.data);
+      setCards({ ...cards, results: [ result,...cards.results] });
       setTitleInput("");
       setContentInput("");
       toast.success("Post created successfully!");
-    } catch(error) {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
       toast.error("Oops, something went wrong!");
     }
   }
@@ -108,7 +132,7 @@ export default function Home() {
             onClick={createPost}
             className={`text-sm lg:text-base rounded-lg py-1.5 font-bold leading-100 text-white w-24 lg:w-28 h-8 self-end cursor-pointer hover:scale-105 transition ease-in-out duration-200 ${
               titleInput === "" || contentInput === ""
-                ? "bg-gray-200"
+                ? "bg-grey-200"
                 : "bg-codeleap-blue"
             } disabled:cursor-not-allowed disabled:scale-100`}
           >
@@ -118,7 +142,28 @@ export default function Home() {
 
         {/* card posts */}
         {cards.results &&
-          cards.results.map((card) => <CardPost key={card.id} card={card} />)}
+          cards.results.map((card) => <CardPost setCards={setCards} key={card.id} card={card} />)}
+
+        {/* pagination */}
+        <div className="flex items-center justify-center gap-4 self-end">
+          <button
+            disabled={page === 1}
+            onClick={goToPreviousPage}
+            className="gap-1 bg-codeleap-blue text-sm lg:text-base rounded-lg py-1.5 font-medium leading-100 text-black w-20  h-8 cursor-pointer hover:scale-105 transition ease-in-out duration-200 disabled:bg-grey-200 disabled:cursor-not-allowed disabled:scale-100"
+          >
+            Previous
+          </button>
+          <p className="text-sm lg:text-base font-bold leading-100">
+            Page {page} of {Math.ceil(cards.count / 10)}
+          </p>
+          <button
+            disabled={page === Math.ceil(cards.count / 10)}
+            onClick={goToNextPage}
+            className="bg-codeleap-blue text-sm lg:text-base rounded-lg py-1.5 font-medium leading-100bg-codeleap-blue text-black w-20 lg:w-28 h-8 cursor-pointer hover:scale-105 transition ease-in-out duration-200 disabled:bg-grey-200 disabled:cursor-not-allowed disabled:scale-100"
+          >
+            Next
+          </button>
+        </div>
       </main>
     </div>
   );
