@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { CardProps } from "../@types/types";
+import { toast } from "react-toastify";
 
 export default function ModalEditPost({
   handleEditModal,
@@ -13,11 +14,17 @@ export default function ModalEditPost({
   const [contentInput, setContentInput] = useState(card.content);
 
   async function handleEditPost() {
-    await axios.patch(`https://dev.codeleap.co.uk/careers/${card.id}/`, {
-      title: titleInput,
-      content: contentInput,
-    });
-    handleEditModal();
+    try {
+      await axios.patch(`https://dev.codeleap.co.uk/careers/${card.id}/`, {
+        title: titleInput,
+        content: contentInput,
+      });
+      handleEditModal();
+      toast.success("Post edited successfully!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Oops, something went wrong!");
+    }
   }
 
   return (

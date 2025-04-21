@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function ModalDeletePost({
   handleDeleteModal,
@@ -8,8 +9,13 @@ export default function ModalDeletePost({
   id: number;
 }) {
   async function handleDeletePost() {
-      console.log(id)
-    await axios.delete(`https://dev.codeleap.co.uk/careers/${id}/`);
+    try {
+      await axios.delete(`https://dev.codeleap.co.uk/careers/${id}/`);
+      toast.success("Post deleted successfully!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Oops, something went wrong!");
+    }
   }
 
   return (

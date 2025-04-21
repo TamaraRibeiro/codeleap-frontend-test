@@ -5,6 +5,7 @@ import CardPost from "./card-post";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { GetCardProps } from "../@types/types";
+import { toast } from "react-toastify";
 
 export default function Home() {
   const { username, logout } = useUser();
@@ -30,16 +31,20 @@ export default function Home() {
   console.log(cards);
 
   async function createPost() {
-    await axios.post("https://dev.codeleap.co.uk/careers/", {
-      username: username,
-      title: titleInput,
-      content: contentInput,
-    });
-    setCards(
-      {...cards}
-    )
-    setTitleInput("");
-    setContentInput("");
+    try {
+      await axios.post("https://dev.codeleap.co.uk/careers/", {
+        username: username,
+        title: titleInput,
+        content: contentInput,
+      });
+      setCards({ ...cards });
+      setTitleInput("");
+      setContentInput("");
+      toast.success("Post created successfully!");
+    } catch(error) {
+      console.log(error)
+      toast.error("Oops, something went wrong!");
+    }
   }
 
   return (
@@ -101,7 +106,11 @@ export default function Home() {
           <button
             disabled={!titleInput || !contentInput}
             onClick={createPost}
-            className={`text-sm lg:text-base rounded-lg py-1.5 font-bold leading-100 text-white w-24 lg:w-28 h-8 self-end cursor-pointer hover:scale-105 transition ease-in-out duration-200 ${titleInput === "" || contentInput === "" ? "bg-gray-200" : "bg-codeleap-blue"} disabled:cursor-not-allowed disabled:scale-100`}
+            className={`text-sm lg:text-base rounded-lg py-1.5 font-bold leading-100 text-white w-24 lg:w-28 h-8 self-end cursor-pointer hover:scale-105 transition ease-in-out duration-200 ${
+              titleInput === "" || contentInput === ""
+                ? "bg-gray-200"
+                : "bg-codeleap-blue"
+            } disabled:cursor-not-allowed disabled:scale-100`}
           >
             Create
           </button>
